@@ -13,6 +13,8 @@ import ChipInput from "material-ui-chip-input";
 import FileUploadInput from "../lib/FileUploadInput";
 import DescriptionIcon from "@material-ui/icons/Description";
 import FaceIcon from "@material-ui/icons/Face";
+import { imageUrl } from './docImage'
+import { jsPDF } from "jspdf";
 
 import { SetPopupContext } from "../App";
 
@@ -115,7 +117,8 @@ const MultifieldInput2 = (props) => {
           container
           className={classes.inputBox}
           key={key}
-          style={{ paddingLeft: 0, paddingRight: 0 }}
+          // style={{ paddingLeft: 0, paddingRight: 0 }}
+          spacing={1}
         >
           <Grid item xs={6}>
             <TextField
@@ -128,6 +131,7 @@ const MultifieldInput2 = (props) => {
                 setExperience(newEx);
               }}
               variant="outlined"
+              style={{ marginBottom: 10 }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -265,7 +269,8 @@ const Profile = (props) => {
             }))
           );
         }
-        else if (response.data.experience.length > 0) {
+
+        if (response.data.experience.length > 0) {
           setExperience(
             response.data.experience.map((exe) => ({
               companyName: exe.companyName ? exe.companyName : "",
@@ -341,6 +346,44 @@ const Profile = (props) => {
       });
     setOpen(false);
   };
+
+
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    let img = imageUrl
+
+    doc.addImage(img, 'PNG', 10, 10, 50, 50);
+
+    doc.text(profileDetails.name, 20, 10);
+
+    doc.text("Educational Details", 65, 65)
+    doc.text("Work Experience", 65, 90)
+
+    profileDetails.education.forEach((ed) => {
+      doc.text(ed.institutionName, 65, 75);
+    })
+    profileDetails.education.forEach((ed) => {
+      doc.text(ed.startYear.toString(), 95, 75);
+    })
+    profileDetails.education.forEach((ed) => {
+      doc.text(ed.endYear.toString(), 125, 75);
+    })
+    profileDetails.experience.forEach((ex) => {
+      doc.text(ex.companyName, 65, 100);
+    })
+    profileDetails.experience.forEach((ex) => {
+      doc.text(ex.from.toString(), 95, 100);
+    })
+    profileDetails.experience.forEach((ex) => {
+      doc.text(ex.to.toString(), 125, 100);
+    })
+
+
+    doc.save("resume.pdf");
+  }
+
 
   return (
     <>
@@ -419,6 +462,7 @@ const Profile = (props) => {
             </Button>
           </Paper>
         </Grid>
+        <Button variant="contained" color="secondary" style={{ padding: "10px 50px", marginTop: "30px" }} onClick={() => generatePDF()}>Generate CV</Button>
       </Grid>
       {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}> */}
 

@@ -138,7 +138,7 @@ const ApplicationTile = (props) => {
           </Grid>
           <Grid item>Posted By: {application.recruiter.name}</Grid>
           <Grid item>Role : {application.job.jobType}</Grid>
-          <Grid item>Salary : &#8377; {application.job.salary} per month</Grid>
+          <Grid item>Salary :£ ; {application.job.salary} per month</Grid>
           <Grid item>
             Duration :{" "}
             {application.job.duration !== 0
@@ -152,7 +152,7 @@ const ApplicationTile = (props) => {
           </Grid>
           <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
           {application.status === "accepted" ||
-          application.status === "finished" ? (
+            application.status === "finished" ? (
             <Grid item>Joined On: {joinedOn.toLocaleDateString()}</Grid>
           ) : null}
         </Grid>
@@ -169,7 +169,7 @@ const ApplicationTile = (props) => {
             </Paper>
           </Grid>
           {application.status === "accepted" ||
-          application.status === "finished" ? (
+            application.status === "finished" ? (
             <Grid item>
               <Button
                 variant="contained"

@@ -90,7 +90,8 @@ const Login = (props) => {
           setPopup({
             open: true,
             severity: "error",
-            message: err.response.data.message,
+            // message: err.response.data.message,
+            message: "Incorrect Input"
           });
           console.log(err.response);
         });

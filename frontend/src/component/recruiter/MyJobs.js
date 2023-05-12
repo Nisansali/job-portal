@@ -79,7 +79,7 @@ const JobTile = (props) => {
   };
 
   const handleClick = (location) => {
-   navigate(location);
+    navigate(location);
   };
 
   const handleClose = () => {
@@ -158,7 +158,7 @@ const JobTile = (props) => {
             <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
           </Grid>
           <Grid item>Role : {job.jobType}</Grid>
-          <Grid item>Salary : &#8377; {job.salary} per month</Grid>
+          <Grid item>Salary : £ ; {job.salary} per month</Grid>
           <Grid item>
             Duration :{" "}
             {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
@@ -371,7 +371,7 @@ const FilterPopup = (props) => {
               item
               xs={9}
               justify="space-around"
-              // alignItems="center"
+            // alignItems="center"
             >
               <Grid item>
                 <FormControlLabel

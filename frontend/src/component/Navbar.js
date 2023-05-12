@@ -33,9 +33,13 @@ const Navbar = (props) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
+
         <Typography variant="h6" className={classes.title}>
-          Job Portal
+          <Button onClick={() => handleClick("/")}>
+            Job Portal
+          </Button>
         </Typography>
+
         {isAuth() ? (
           userType() === "recruiter" ? (
             <>

@@ -1,10 +1,10 @@
 import { Grid, Typography } from "@material-ui/core";
-import Cover from '../images/cover.jpg';
+import Cover from '../images/JOB Portal.png';
 
 const Welcome = (props) => {
   return (
     <div>
-    {/* <Grid
+      {/* <Grid
       container
       item
       direction="column"
@@ -18,11 +18,11 @@ const Welcome = (props) => {
        
       </Grid>
     </Grid> */}
-    <div>
-          <h4>Welcome to Job Portal Web Application</h4>
-          <img src={Cover} alt="Cover Image" height={450}  width={700}/> {/* Use the imported image as the source */}
-        </div>
-        </div>
+      <div>
+
+        <img src={Cover} alt="Cover Image" /> {/* Use the imported image as the source */}
+      </div>
+    </div>
   );
 };
 
