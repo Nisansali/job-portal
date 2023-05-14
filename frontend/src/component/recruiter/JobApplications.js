@@ -1,28 +1,23 @@
-import { useState, useEffect, useContext } from "react";
 import {
+  Avatar,
   Button,
+  Checkbox,
   Chip,
+  FormControlLabel,
   Grid,
   IconButton,
-  InputAdornment,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
   Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
-  Checkbox,
-  Avatar,
+  Paper,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
-import { useParams } from "react-router-dom";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { SetPopupContext } from "../../App";
 
@@ -80,7 +75,7 @@ const FilterPopup = (props) => {
               item
               xs={9}
               justify="space-around"
-              // alignItems="center"
+            // alignItems="center"
             >
               <Grid item>
                 <FormControlLabel
@@ -579,9 +574,8 @@ const ApplicationTile = (props) => {
             Education:{" "}
             {application.jobApplicant.education
               .map((edu) => {
-                return `${edu.institutionName} (${edu.startYear}-${
-                  edu.endYear ? edu.endYear : "Ongoing"
-                })`;
+                return `${edu.institutionName} (${edu.startYear}-${edu.endYear ? edu.endYear : "Ongoing"
+                  })`;
               })
               .join(", ")}
           </Grid>
@@ -595,16 +589,6 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={3}>
-          <Grid item>
-            <Button
-              variant="contained"
-              className={classes.statusBlock}
-              color="primary"
-              onClick={() => getResume()}
-            >
-              Download Resume
-            </Button>
-          </Grid>
           <Grid item container xs>
             {buttonSet[application.status]}
           </Grid>
@@ -626,7 +610,7 @@ const ApplicationTile = (props) => {
             variant="contained"
             color="primary"
             style={{ padding: "10px 50px" }}
-            // onClick={() => changeRating()}
+          // onClick={() => changeRating()}
           >
             Submit
           </Button>

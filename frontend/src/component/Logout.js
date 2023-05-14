@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 import { SetPopupContext } from "../App";

@@ -1,26 +1,16 @@
-import { useState, useEffect, useContext } from "react";
 import {
   Button,
   Chip,
   Grid,
-  IconButton,
-  InputAdornment,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
   Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
-  Checkbox,
+  Paper,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-
+import { useContext, useEffect, useState } from "react";
 import { SetPopupContext } from "../App";
-
 import apiList from "../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({

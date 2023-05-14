@@ -1,20 +1,16 @@
-import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Grid,
-  Typography,
-  Modal,
   Paper,
-  makeStyles,
   TextField,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
 import axios from "axios";
-import ChipInput from "material-ui-chip-input";
-import FileUploadInput from "../lib/FileUploadInput";
-import DescriptionIcon from "@material-ui/icons/Description";
-import FaceIcon from "@material-ui/icons/Face";
-import { imageUrl } from './docImage'
 import { jsPDF } from "jspdf";
+import ChipInput from "material-ui-chip-input";
+import { useContext, useEffect, useState } from "react";
+import { imageUrl } from './docImage';
 
 import { SetPopupContext } from "../App";
 

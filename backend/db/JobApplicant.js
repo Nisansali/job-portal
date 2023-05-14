@@ -19,22 +19,22 @@ let schema = new mongoose.Schema(
         startYear: {
           type: Number,
           min: 1930,
-          max: new Date().getFullYear(),
+          // max: new Date().getFullYear(),
           required: true,
           validate: Number.isInteger,
         },
         endYear: {
           type: Number,
-          max: new Date().getFullYear(),
-          validate: [
-            { validator: Number.isInteger, msg: "Year should be an integer" },
-            {
-              validator: function (value) {
-                return this.startYear <= value;
-              },
-              msg: "End year should be greater than or equal to Start year",
-            },
-          ],
+
+          // validate: [
+          //   { validator: Number.isInteger, msg: "Year should be an integer" },
+          //   {
+          //     validator: function (value) {
+          //       return this.startYear <= value;
+          //     },
+          //     msg: "End year should be greater than or equal to Start year",
+          //   },
+          // ],
         },
       },
     ],
@@ -53,16 +53,16 @@ let schema = new mongoose.Schema(
         },
         to: {
           type: Number,
-          max: new Date().getFullYear(),
-          validate: [
-            { validator: Number.isInteger, msg: "Year should be an integer" },
-            {
-              validator: function (value) {
-                return this.from <= value;
-              },
-              msg: "End year should be greater than or equal to Start year",
-            },
-          ],
+
+          // validate: [
+          //   { validator: Number.isInteger, msg: "Year should be an integer" },
+          //   {
+          //     validator: function (value) {
+          //       return this.from <= value;
+          //     },
+          //     msg: "End year should be greater than or equal to Start year",
+          //   },
+          // ],
         },
         position: {
           type: String,

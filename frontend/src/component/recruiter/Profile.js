@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Grid,
-  Typography,
-  Modal,
   Paper,
-  makeStyles,
   TextField,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 
@@ -48,10 +47,6 @@ const Profile = (props) => {
     });
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const getData = () => {
     axios
       .get(apiList.user, {
@@ -73,6 +68,11 @@ const Profile = (props) => {
         });
       });
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
 
   const handleUpdate = () => {
     let updatedDetails = {
@@ -161,7 +161,7 @@ const Profile = (props) => {
                   onChange={(event) => {
                     if (
                       event.target.value.split(" ").filter(function (n) {
-                        return n != "";
+                        return n !== "";
                       }).length <= 250
                     ) {
                       handleInput("bio", event.target.value);
@@ -177,7 +177,7 @@ const Profile = (props) => {
                 }}
               >
                 <PhoneInput
-                  country={"in"}
+                  country={"gb"}
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
                   style={{ width: "auto" }}

@@ -546,7 +546,7 @@ const Register = (props) => {
                 onChange={(event) => {
                   if (
                     event.target.value.split(" ").filter(function (n) {
-                      return n != "";
+                      return n !== "";
                     }).length <= 250
                   ) {
                     handleInput("bio", event.target.value);

@@ -38,8 +38,7 @@ router.post("/jobs", jwtAuth, (req, res) => {
     rating: data.rating,
   });
 
-  job
-    .save()
+  job.save()
     .then(() => {
       res.json({ message: "Job added successfully to the database" });
     })
@@ -78,12 +77,13 @@ router.get("/jobs", jwtAuth, (req, res) => {
 
   if (req.query.jobType) {
     let jobTypes = [];
+
     if (Array.isArray(req.query.jobType)) {
       jobTypes = req.query.jobType;
     } else {
       jobTypes = [req.query.jobType];
     }
-    console.log(jobTypes);
+
     findParams = {
       ...findParams,
       jobType: {
@@ -165,9 +165,6 @@ router.get("/jobs", jwtAuth, (req, res) => {
     }
   }
 
-  console.log(findParams);
-  console.log(sortParams);
-
   // Job.find(findParams).collation({ locale: "en" }).sort(sortParams);
   // .skip(skip)
   // .limit(limit)
@@ -202,8 +199,6 @@ router.get("/jobs", jwtAuth, (req, res) => {
       },
     ];
   }
-
-  console.log(arr);
 
   Job.aggregate(arr)
     .then((posts) => {
@@ -240,12 +235,14 @@ router.get("/jobs/:id", jwtAuth, (req, res) => {
 // to update info of a particular job
 router.put("/jobs/:id", jwtAuth, (req, res) => {
   const user = req.user;
+
   if (user.type != "recruiter") {
     res.status(401).json({
       message: "You don't have permissions to change the job details",
     });
     return;
   }
+
   Job.findOne({
     _id: req.params.id,
     userId: user.id,
@@ -258,17 +255,20 @@ router.put("/jobs/:id", jwtAuth, (req, res) => {
         return;
       }
       const data = req.body;
+
       if (data.maxApplicants) {
         job.maxApplicants = data.maxApplicants;
       }
+
       if (data.maxPositions) {
         job.maxPositions = data.maxPositions;
       }
+
       if (data.deadline) {
         job.deadline = data.deadline;
       }
-      job
-        .save()
+
+      job.save()
         .then(() => {
           res.json({
             message: "Job details updated successfully",
@@ -286,12 +286,14 @@ router.put("/jobs/:id", jwtAuth, (req, res) => {
 // to delete a job
 router.delete("/jobs/:id", jwtAuth, (req, res) => {
   const user = req.user;
+
   if (user.type != "recruiter") {
     res.status(401).json({
       message: "You don't have permissions to delete the job",
     });
     return;
   }
+
   Job.findOneAndDelete({
     _id: req.params.id,
     userId: user.id,
@@ -315,6 +317,7 @@ router.delete("/jobs/:id", jwtAuth, (req, res) => {
 // get user's personal details
 router.get("/user", jwtAuth, (req, res) => {
   const user = req.user;
+
   if (user.type === "recruiter") {
     Recruiter.findOne({ userId: user._id })
       .then((recruiter) => {
@@ -396,6 +399,7 @@ router.get("/user/:id", jwtAuth, (req, res) => {
 router.put("/user", jwtAuth, (req, res) => {
   const user = req.user;
   const data = req.body;
+
   if (user.type == "recruiter") {
     Recruiter.findOne({ userId: user._id })
       .then((recruiter) => {
@@ -405,17 +409,20 @@ router.put("/user", jwtAuth, (req, res) => {
           });
           return;
         }
+
         if (data.name) {
           recruiter.name = data.name;
         }
+
         if (data.contactNumber) {
           recruiter.contactNumber = data.contactNumber;
         }
+
         if (data.bio) {
           recruiter.bio = data.bio;
         }
-        recruiter
-          .save()
+
+        recruiter.save()
           .then(() => {
             res.json({
               message: "User information updated successfully",
@@ -440,24 +447,28 @@ router.put("/user", jwtAuth, (req, res) => {
         if (data.name) {
           jobApplicant.name = data.name;
         }
+
         if (data.education) {
           jobApplicant.education = data.education;
         }
+
         if (data.experience) {
           jobApplicant.experience = data.experience;
         }
+
         if (data.skills) {
           jobApplicant.skills = data.skills;
         }
+
         if (data.resume) {
           jobApplicant.resume = data.resume;
         }
+
         if (data.profile) {
           jobApplicant.profile = data.profile;
         }
-        console.log(jobApplicant);
-        jobApplicant
-          .save()
+
+        jobApplicant.save()
           .then(() => {
             res.json({
               message: "User information updated successfully",
@@ -485,12 +496,6 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
   const data = req.body;
   const jobId = req.params.id;
 
-  // check whether applied previously
-  // find job
-  // check count of active applications < limit
-  // check user had < 10 active applications && check if user is not having any accepted jobs (user id)
-  // store the data in applications
-
   Application.findOne({
     userId: user._id,
     jobId: jobId,
@@ -499,7 +504,6 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
     },
   })
     .then((appliedApplication) => {
-      console.log(appliedApplication);
       if (appliedApplication !== null) {
         res.status(400).json({
           message: "You have already applied for this job",
@@ -592,6 +596,7 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
 // recruiter gets applications for a particular job [pagination] [todo: test: done]
 router.get("/jobs/:id/applications", jwtAuth, (req, res) => {
   const user = req.user;
+
   if (user.type != "recruiter") {
     res.status(401).json({
       message: "You don't have permissions to view job applications",
@@ -692,20 +697,8 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
   const id = req.params.id;
   const status = req.body.status;
 
-  // "applied", // when a applicant is applied
-  // "shortlisted", // when a applicant is shortlisted
-  // "accepted", // when a applicant is accepted
-  // "rejected", // when a applicant is rejected
-  // "deleted", // when any job is deleted
-  // "cancelled", // an application is cancelled by its author or when other application is accepted
-  // "finished", // when job is over
-
   if (user.type === "recruiter") {
     if (status === "accepted") {
-      // get job id from application
-      // get job info for maxPositions count
-      // count applications that are already accepted
-      // compare and if condition is satisfied, then save
 
       Application.findOne({
         _id: id,
@@ -848,8 +841,6 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
     }
   } else {
     if (status === "cancelled") {
-      console.log(id);
-      console.log(user._id);
       Application.findOneAndUpdate(
         {
           _id: id,
@@ -862,7 +853,6 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
         }
       )
         .then((tmp) => {
-          console.log(tmp);
           res.json({
             message: `Application ${status} successfully`,
           });
@@ -997,7 +987,6 @@ router.put("/rating", jwtAuth, (req, res) => {
     })
       .then((rating) => {
         if (rating === null) {
-          console.log("new rating");
           Application.countDocuments({
             userId: data.applicantId,
             recruiterId: user._id,
@@ -1007,7 +996,6 @@ router.put("/rating", jwtAuth, (req, res) => {
           })
             .then((acceptedApplicant) => {
               if (acceptedApplicant > 0) {
-                // add a new rating
 
                 rating = new Rating({
                   category: "applicant",
@@ -1163,11 +1151,7 @@ router.put("/rating", jwtAuth, (req, res) => {
       category: "job",
     })
       .then((rating) => {
-        console.log(user._id);
-        console.log(data.jobId);
-        console.log(rating);
         if (rating === null) {
-          console.log(rating);
           Application.countDocuments({
             userId: user._id,
             jobId: data.jobId,
@@ -1285,7 +1269,6 @@ router.put("/rating", jwtAuth, (req, res) => {
                     return;
                   }
                   const avg = result[0].average;
-                  console.log(avg);
 
                   Job.findOneAndUpdate(
                     {
@@ -1346,38 +1329,5 @@ router.get("/rating", jwtAuth, (req, res) => {
     });
   });
 });
-
-// Application.findOne({
-//   _id: id,
-//   userId: user._id,
-// })
-//   .then((application) => {
-//     application.status = status;
-//     application
-//       .save()
-//       .then(() => {
-//         res.json({
-//           message: `Application ${status} successfully`,
-//         });
-//       })
-//       .catch((err) => {
-//         res.status(400).json(err);
-//       });
-//   })
-//   .catch((err) => {
-//     res.status(400).json(err);
-//   });
-
-// router.get("/jobs", (req, res, next) => {
-//   passport.authenticate("jwt", { session: false }, function (err, user, info) {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!user) {
-//       res.status(401).json(info);
-//       return;
-//     }
-//   })(req, res, next);
-// });
 
 module.exports = router;

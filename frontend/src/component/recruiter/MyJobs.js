@@ -1,32 +1,28 @@
-import { useState, useEffect, useContext } from "react";
 import {
   Button,
+  Checkbox,
   Chip,
+  FormControlLabel,
   Grid,
   IconButton,
   InputAdornment,
-  makeStyles,
+  MenuItem,
+  Modal,
   Paper,
+  Slider,
   TextField,
   Typography,
-  Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
-  Checkbox,
+  makeStyles
 } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
-import Rating from "@material-ui/lab/Rating";
-import Pagination from "@material-ui/lab/Pagination";
-import axios from "axios";
-import SearchIcon from "@material-ui/icons/Search";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import SearchIcon from "@material-ui/icons/Search";
+import Rating from "@material-ui/lab/Rating";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SetPopupContext } from "../../App";
-
 import apiList from "../../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,8 +65,6 @@ const JobTile = (props) => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [jobDetails, setJobDetails] = useState(job);
 
-  console.log(jobDetails);
-
   const handleInput = (key, value) => {
     setJobDetails({
       ...jobDetails,
@@ -91,7 +85,6 @@ const JobTile = (props) => {
   };
 
   const handleDelete = () => {
-    console.log(job._id);
     axios
       .delete(`${apiList.jobs}/${job._id}`, {
         headers: {
@@ -154,11 +147,8 @@ const JobTile = (props) => {
           <Grid item>
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
-          <Grid item>
-            <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
-          </Grid>
           <Grid item>Role : {job.jobType}</Grid>
-          <Grid item>Salary : £ ; {job.salary} per month</Grid>
+          <Grid item>Salary : £ {job.salary} per month</Grid>
           <Grid item>
             Duration :{" "}
             {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
@@ -175,8 +165,8 @@ const JobTile = (props) => {
             ))}
           </Grid>
         </Grid>
-        <Grid item container direction="column" xs={3}>
-          <Grid item xs>
+        <Grid item container direction="column" spacing={2} xs={3}>
+          <Grid item>
             <Button
               variant="contained"
               color="primary"
@@ -605,62 +595,6 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid
-                item
-                container
-                xs={4}
-                justify="space-around"
-                alignItems="center"
-                style={{ border: "1px solid #D1D1D1", borderRadius: "5px" }}
-              >
-                <Grid item>
-                  <Checkbox
-                    name="rating"
-                    checked={searchOptions.sort.rating.status}
-                    onChange={(event) =>
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          rating: {
-                            ...searchOptions.sort.rating,
-                            status: event.target.checked,
-                          },
-                        },
-                      })
-                    }
-                    id="rating"
-                  />
-                </Grid>
-                <Grid item>
-                  <label for="rating">
-                    <Typography>Rating</Typography>
-                  </label>
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    disabled={!searchOptions.sort.rating.status}
-                    onClick={() => {
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          rating: {
-                            ...searchOptions.sort.rating,
-                            desc: !searchOptions.sort.rating.desc,
-                          },
-                        },
-                      });
-                    }}
-                  >
-                    {searchOptions.sort.rating.desc ? (
-                      <ArrowDownwardIcon />
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )}
-                  </IconButton>
-                </Grid>
-              </Grid>
             </Grid>
           </Grid>
 
@@ -727,19 +661,19 @@ const MyJobs = (props) => {
     if (searchOptions.jobType.wfh) {
       searchParams = [...searchParams, `jobType=Work%20From%20Home`];
     }
-    if (searchOptions.salary[0] != 0) {
+    if (searchOptions.salary[0] !== 0) {
       searchParams = [
         ...searchParams,
         `salaryMin=${searchOptions.salary[0] * 1000}`,
       ];
     }
-    if (searchOptions.salary[1] != 100) {
+    if (searchOptions.salary[1] !== 100) {
       searchParams = [
         ...searchParams,
         `salaryMax=${searchOptions.salary[1] * 1000}`,
       ];
     }
-    if (searchOptions.duration != "0") {
+    if (searchOptions.duration !== "0") {
       searchParams = [...searchParams, `duration=${searchOptions.duration}`];
     }
 
@@ -756,21 +690,20 @@ const MyJobs = (props) => {
         }
       }
     });
+
     searchParams = [...searchParams, ...asc, ...desc];
     const queryString = searchParams.join("&");
-    console.log(queryString);
+
     let address = apiList.jobs;
     if (queryString !== "") {
       address = `${address}?${queryString}`;
     }
 
-    console.log(address);
-    axios
-      .get(address, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+    axios.get(address, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => {
         console.log(response.data);
         setJobs(response.data);

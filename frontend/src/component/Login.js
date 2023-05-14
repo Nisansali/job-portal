@@ -1,18 +1,17 @@
-import { useContext, useState } from "react";
 import {
-  Grid,
-  TextField,
   Button,
-  Typography,
-  makeStyles,
+  Grid,
   Paper,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
 import axios from "axios";
+import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-import PasswordInput from "../lib/PasswordInput";
-import EmailInput from "../lib/EmailInput";
 import { SetPopupContext } from "../App";
+import EmailInput from "../lib/EmailInput";
+import PasswordInput from "../lib/PasswordInput";
 
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";

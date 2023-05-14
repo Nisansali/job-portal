@@ -1,28 +1,21 @@
-import { useState, useEffect, useContext } from "react";
 import {
+  Avatar,
   Button,
+  Checkbox,
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
   Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
-  Checkbox,
-  Avatar,
+  Paper,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
-import { useParams } from "react-router-dom";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { useContext, useEffect, useState } from "react";
 
 import { SetPopupContext } from "../../App";
 
@@ -71,79 +64,6 @@ const FilterPopup = (props) => {
         }}
       >
         <Grid container direction="column" alignItems="center" spacing={3}>
-          {/* <Grid container item alignItems="center">
-            <Grid item xs={3}>
-              Application Status
-            </Grid>
-            <Grid
-              container
-              item
-              xs={9}
-              justify="space-around"
-              // alignItems="center"
-            >
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="rejected"
-                      checked={searchOptions.status.rejected}
-                      onChange={(event) => {
-                        setSearchOptions({
-                          ...searchOptions,
-                          status: {
-                            ...searchOptions.status,
-                            [event.target.name]: event.target.checked,
-                          },
-                        });
-                      }}
-                    />
-                  }
-                  label="Rejected"
-                />
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="applied"
-                      checked={searchOptions.status.applied}
-                      onChange={(event) => {
-                        setSearchOptions({
-                          ...searchOptions,
-                          status: {
-                            ...searchOptions.status,
-                            [event.target.name]: event.target.checked,
-                          },
-                        });
-                      }}
-                    />
-                  }
-                  label="Applied"
-                />
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="shortlisted"
-                      checked={searchOptions.status.shortlisted}
-                      onChange={(event) => {
-                        setSearchOptions({
-                          ...searchOptions,
-                          status: {
-                            ...searchOptions.status,
-                            [event.target.name]: event.target.checked,
-                          },
-                        });
-                      }}
-                    />
-                  }
-                  label="Shortlisted"
-                />
-              </Grid>
-            </Grid>
-          </Grid> */}
           <Grid container item alignItems="center">
             <Grid item xs={3}>
               Sort
@@ -310,63 +230,6 @@ const FilterPopup = (props) => {
                     }}
                   >
                     {searchOptions.sort.dateOfJoining.desc ? (
-                      <ArrowDownwardIcon />
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )}
-                  </IconButton>
-                </Grid>
-              </Grid>
-              <Grid
-                item
-                container
-                xs={6}
-                justify="space-around"
-                alignItems="center"
-                style={{ border: "1px solid #D1D1D1", borderRadius: "5px" }}
-              >
-                <Grid item>
-                  <Checkbox
-                    name="rating"
-                    checked={searchOptions.sort["jobApplicant.rating"].status}
-                    onChange={(event) =>
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort[["jobApplicant.rating"]],
-                            status: event.target.checked,
-                          },
-                        },
-                      })
-                    }
-                    id="rating"
-                  />
-                </Grid>
-                <Grid item>
-                  <label for="rating">
-                    <Typography>Rating</Typography>
-                  </label>
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    disabled={!searchOptions.sort["jobApplicant.rating"].status}
-                    onClick={() => {
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort["jobApplicant.rating"],
-                            desc: !searchOptions.sort["jobApplicant.rating"]
-                              .desc,
-                          },
-                        },
-                      });
-                    }}
-                  >
-                    {searchOptions.sort["jobApplicant.rating"].desc ? (
                       <ArrowDownwardIcon />
                     ) : (
                       <ArrowUpwardIcon />
@@ -545,16 +408,6 @@ const ApplicationTile = (props) => {
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          <Grid item>
-            <Rating
-              value={
-                application.jobApplicant.rating !== -1
-                  ? application.jobApplicant.rating
-                  : null
-              }
-              readOnly
-            />
-          </Grid>
           <Grid item>Job Title: {application.job.title}</Grid>
           <Grid item>Role: {application.job.jobType}</Grid>
           <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
@@ -568,16 +421,6 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={3}>
-          <Grid item>
-            <Button
-              variant="contained"
-              className={classes.statusBlock}
-              color="primary"
-              onClick={() => getResume()}
-            >
-              Download Resume
-            </Button>
-          </Grid>
           <Grid item container xs>
             {/* {buttonSet[application.status]} */}
             <Button
@@ -592,18 +435,6 @@ const ApplicationTile = (props) => {
               }}
             >
               End Job
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.statusBlock}
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              Rate Applicant
             </Button>
           </Grid>
         </Grid>
@@ -741,8 +572,6 @@ const AcceptedApplicants = (props) => {
     if (queryString !== "") {
       address = `${address}?${queryString}`;
     }
-
-    console.log(address);
 
     axios
       .get(address, {

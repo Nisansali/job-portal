@@ -1,16 +1,15 @@
-import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Grid,
-  Typography,
-  Modal,
-  Paper,
-  makeStyles,
-  TextField,
   MenuItem,
+  Paper,
+  TextField,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
 import axios from "axios";
 import ChipInput from "material-ui-chip-input";
+import { useContext, useState } from "react";
 
 import { SetPopupContext } from "../../App";
 

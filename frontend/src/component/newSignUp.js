@@ -1,26 +1,25 @@
-import { useState, useContext } from "react";
 import {
-  Grid,
-  TextField,
   Button,
-  Typography,
-  makeStyles,
-  Paper,
+  Grid,
   MenuItem,
-  Input,
+  Paper,
+  TextField,
+  Typography,
+  makeStyles
 } from "@material-ui/core";
-import axios from "axios";
-import { Navigate } from "react-router-dom";
-import ChipInput from "material-ui-chip-input";
 import DescriptionIcon from "@material-ui/icons/Description";
 import FaceIcon from "@material-ui/icons/Face";
+import axios from "axios";
+import ChipInput from "material-ui-chip-input";
+import { useContext, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
+import { Navigate } from "react-router-dom";
 
-import PasswordInput from "../lib/PasswordInput";
+import { SetPopupContext } from "../App";
 import EmailInput from "../lib/EmailInput";
 import FileUploadInput from "../lib/FileUploadInput";
-import { SetPopupContext } from "../App";
+import PasswordInput from "../lib/PasswordInput";
 
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const MultifieldInput = (props) => {
   const classes = useStyles();
   const { education, setEducation } = props;
-  
+
   return (
     <>
       {education.map((obj, key) => (
@@ -112,7 +111,7 @@ const MultifieldInput = (props) => {
       </Grid>
     </>
   );
-  
+
 };
 
 const Login = (props) => {
